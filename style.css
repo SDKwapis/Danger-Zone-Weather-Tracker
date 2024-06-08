@@ -41,6 +41,7 @@ footer {
 #srchbttn {
     background-color: rgb(78, 169, 248);
     margin: 0;
+    cursor: pointer;
     color: white;
     padding: 5px 0 5px 0;
     width: 100%;
@@ -53,7 +54,7 @@ footer {
     margin-top: 5px;
     display: inline-block;
     border: 2px solid #b9b9b9;
-    color: #b9b9b9;
+    color: black;
     border-radius: 4px;
     box-sizing: border-box;
     font-size: large;
