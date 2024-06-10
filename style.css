@@ -69,7 +69,7 @@ footer {
 }
 
 .city {
-    margin: 5px 5px;
+    margin: 5px 0px 5px 0px;
     width: 100%;
     background-color: rgb(162, 162, 162);
     border-radius: 4px;

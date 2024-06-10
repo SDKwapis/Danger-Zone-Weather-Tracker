@@ -10,8 +10,8 @@ cityInput.addEventListener('click', function(event) {
     localStorage.setItem('City', JSON.stringify(cityList));
     const cityButtonList = document.getElementById('cityButtons');
     const bttn = document.createElement('button');
-     bttn.innerHTML = cityValue;
-     bttn.className = 'city';
+    bttn.classList.add('city');
+    bttn.innerHTML = cityValue;
     cityButtonList.appendChild(bttn);
-        cityName.reset();
+    cityName.value = "";
 });
