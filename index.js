@@ -1,6 +1,5 @@
 const cityInput = document.querySelector('#srchbttn');
 const cityName = document.querySelector('#searchCity');
-const cityButton = document.createElement('button');
 
 const cityList = [];
 
@@ -9,16 +8,13 @@ cityInput.addEventListener('click', function(event) {
     const cityValue = cityName.value;
     cityList.push(cityValue);
     localStorage.setItem('City', JSON.stringify(cityList));
-    document.getElementById("searchCity").reset();
-});
-
-
-function renderCities() {
-    for (let i = 0; i< cityList.length; i++) {
-        const cities = cityList[i];
-
-        const button = document.createElement('button');
-        button.textContent = cities;
-
+    // document.getElementById("searchCity").reset();
+    const cityArray = JSON.parse(window.localStorage.getItem('City'));
+    for (let i = 0; i < cityArray.length; i++) {
+        const cityButtonList = document.getElementById('cityButtons');
+        const bttn = document.createElement('button');
+        bttn.innerHTML = cityArray[i];
+        bttn.className = 'city';
+        cityButtonList.appendChild(bttn);
     }
-}
+});
