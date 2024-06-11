@@ -40,7 +40,7 @@ cityInput.addEventListener('click', function(event) {
 const apiKey = 'f63ca6bf62c5c8783f6c0a4d9033f7ec';
 const cityNameInput = cityName.value;
 const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=84.5555&lon=42.7325&appid=${apiKey}`;
-const geoCode = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit={limit}&appid=${apiKey}`;
+const geoCode = `http://api.openweathermap.org/geo/1.0/direct?q=Detroit&limit=1&appid=${apiKey}`;
 
 fetch(apiUrl)
     .then(function(res) {
@@ -52,6 +52,14 @@ fetch(apiUrl)
     });
 
 
+fetch(geoCode)
+    .then(function(res) {
+        console.log(res);
+        return res.json();
+    })
+    .then(function(data) {
+        console.log(data);
+    });
    
 
 // uses geocode to fetch lat/lon from api based on city name
