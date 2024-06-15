@@ -2,6 +2,7 @@ const cityInput = document.querySelector('#srchbttn');
 const cityName = document.querySelector('#searchCity');
 
 
+
 const cityList = [];
 
 // pulls the searched cities from local storage and displays them in the searched cities list
@@ -23,7 +24,7 @@ cityInput.addEventListener('click', function(event) {
     event.preventDefault();
     const cityValue = cityName.value;
     if(cityValue === '') {
-        console.log('No city entered');
+        alert('Please enter a city name');
     } else {
     cityList.push(cityValue);
     localStorage.setItem('City', JSON.stringify(cityList));
@@ -37,36 +38,59 @@ cityInput.addEventListener('click', function(event) {
 });
 
 // API call
+const preCity = document.getElementById('cityButtons');
 const apiKey = 'f63ca6bf62c5c8783f6c0a4d9033f7ec';
 const cityNameInput = cityName.value;
-const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=84.5555&lon=42.7325&appid=${apiKey}`;
-const geoCode = `http://api.openweathermap.org/geo/1.0/direct?q=Detroit&limit=1&appid=${apiKey}`;
+// const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=84.5555&lon=42.7325&appid=${apiKey}`;
+// const geoCode = `http://api.openweathermap.org/geo/1.0/direct?q=${cityValue}&limit=1&appid=${apiKey}`;
 
-fetch(apiUrl)
+
+preCity.addEventListener('click', function(event) {
+    event.preventDefault();
+    const cityValue = preCity.innerText;
+    console.log('City:', cityValue);
+    const apiKey = 'f63ca6bf62c5c8783f6c0a4d9033f7ec';
+    const geoCode = `http://api.openweathermap.org/geo/1.0/direct?q=${cityValue}&limit=1&appid=${apiKey}`;
+    
+    fetch(geoCode)
     .then(function(res) {
         console.log(res);
         return res.json();
     })
     .then(function(data) {
-        console.log(data);
-    });
+        const [{lat, lon}] = data;
+        const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
+        fetch(apiUrl)
+        .then(function(res) {
+            console.log(res);
+            return res.json();
+        })
+        .then(function(data) {
+            console.log(data);
+            const {current: {temp, humidity, dt, wind_speed}} = data;
+            console.log(temp)
+            
+            const cityTitle = document.getElementById('weatherDisplay');
+            const cityDisplay = document.createElement('h2');
+            const cityTemp = document.createElement('p');
+            const cityWind = document.createElement('p');
+            const cityHum = document.createElement('p');
+            cityDisplay.innerHTML = `${cityValue} (${dt})`;
+            cityTemp.innerHTML = `Temp: ${Math.round((temp - 273.15)*1.8+32)}\u00B0C`;
+            cityWind.innerHTML = `Wind: ${wind_speed} mph`;
+            cityHum.innerHTML = `Humidity: ${humidity}%`;
+            cityTitle.appendChild(cityDisplay);
+            cityTitle.appendChild(cityTemp);
+            cityTitle.appendChild(cityWind);
+            cityTitle.appendChild(cityHum);
 
-fetch(geoCode)
-    .then(function(res) {
-        console.log(res);
-        return res.json();
-    })
-    .then(function(data) {
-        console.log(data);
+            
+        });
     });
+});
+
    
 
-// uses geocode to fetch lat/lon from api based on city name
-// cityInput.addEventListener('click', function() {
-//     const cityNameInput = cityName.value;
-//     fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityNameInput}&limit=1&appid=bd421c12081b8c5b5cfd4c992f4519f5`);
-//     console.log(response)
-// });
 
 
