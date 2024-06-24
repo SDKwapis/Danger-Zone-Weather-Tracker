@@ -34,9 +34,8 @@ function fetchAndDisplayWeather(cityValue) {
         .then((res) => res.json())
         .then((data) => {
           const {
-            current: { temp, dt, humidity, wind_speed },
-            daily,
-          } = data;
+            current: { temp, dt, humidity, wind_speed, weather: {0: id} },
+            daily} = data;
           console.log(data);
           const cityDate = new Date(dt * 1000).toLocaleDateString();
           const cityTitle = document.getElementById("weatherDisplay");
@@ -44,8 +43,9 @@ function fetchAndDisplayWeather(cityValue) {
           const cityTemp = document.createElement("p");
           const cityWind = document.createElement("p");
           const cityHum = document.createElement("p");
-          cityDisplay.innerHTML = `${cityValue} ${cityDate}`;
-          cityTemp.innerHTML = `Temp: ${Math.round(temp * 1.8) + 32}\u00B0C`;
+          const emoji = document.createElement("p");
+          cityDisplay.innerHTML = `${cityValue} ${cityDate} ${getEmoji()}`;
+          cityTemp.innerHTML = `Temp: ${Math.round(temp * 1.8) + 32}\u00B0F`;
           cityWind.innerHTML = `Wind: ${wind_speed} mph`;
           cityHum.innerHTML = `Humidity: ${humidity}%`;
           cityTitle.appendChild(cityDisplay);
@@ -69,7 +69,7 @@ function fetchAndDisplayWeather(cityValue) {
             const fiveDayHum = document.createElement("p");
 
             fiveDayDisplay.innerHTML = `${forecastDate}`;
-            fiveDayTemp.innerHTML = `Temp: ${Math.round(forecastTemp * 1.8) + 32}\u00B0C`;
+            fiveDayTemp.innerHTML = `Temp: ${Math.round(forecastTemp * 1.8) + 32}\u00B0F`;
             fiveDayWind.innerHTML = `Wind: ${forecastWind} mph`;
             fiveDayHum.innerHTML = `Humidity: ${forecastHum}%`;
 
@@ -114,5 +114,27 @@ document
       fetchAndDisplayWeather(cityValue);
     }
   });
+
+  const conditionId = weather.id;
+
+  function getEmoji (conditionId){
+    if (conditionId >= 200 && conditionId < 300){
+      return "⛈️";
+    } else if (conditionId >= 300 && conditionId < 400){
+      return "🌧️";
+    } else if (conditionId >= 500 && conditionId < 600){
+      return "🌧️";
+    } else if (conditionId >= 600 && conditionId < 700){
+      return "❄️";
+    } else if (conditionId >= 700 && conditionId < 800){
+      return "🌫️";
+    } else if (conditionId === 800){
+      return "☀️";
+    } else if (conditionId >= 801 && conditionId < 810){
+      return "☁️";
+    } else {
+      return "?";
+    }
+  };
 
 
