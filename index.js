@@ -34,8 +34,10 @@ function fetchAndDisplayWeather(cityValue) {
         .then((res) => res.json())
         .then((data) => {
           const {
-            current: { temp, dt, humidity, wind_speed, weather: {0: id} },
+            current: { temp, dt, humidity, wind_speed },
             daily} = data;
+            const { id } = data.current.weather[0];
+          // console.log(id);
           console.log(data);
           const cityDate = new Date(dt * 1000).toLocaleDateString();
           const cityTitle = document.getElementById("weatherDisplay");
@@ -43,8 +45,8 @@ function fetchAndDisplayWeather(cityValue) {
           const cityTemp = document.createElement("p");
           const cityWind = document.createElement("p");
           const cityHum = document.createElement("p");
-          const emoji = document.createElement("p");
-          cityDisplay.innerHTML = `${cityValue} ${cityDate} ${getEmoji()}`;
+
+          cityDisplay.innerHTML = `${cityValue} ${cityDate} ${getEmoji(id)}`;
           cityTemp.innerHTML = `Temp: ${Math.round(temp * 1.8) + 32}\u00B0F`;
           cityWind.innerHTML = `Wind: ${wind_speed} mph`;
           cityHum.innerHTML = `Humidity: ${humidity}%`;
@@ -56,6 +58,7 @@ function fetchAndDisplayWeather(cityValue) {
           for (let i = 1; i <= 5; i++) {
             const day = daily[i];
             const forecastDate = new Date(day.dt * 1000).toLocaleDateString();
+            const forecastEmoji = day.weather[0].id;
             const forecastTemp = Math.round(day.temp.day);
             const forecastWind = day.wind_speed;
             const forecastHum = day.humidity;
@@ -68,7 +71,8 @@ function fetchAndDisplayWeather(cityValue) {
             const fiveDayWind = document.createElement("p");
             const fiveDayHum = document.createElement("p");
 
-            fiveDayDisplay.innerHTML = `${forecastDate}`;
+            fiveDayDisplay.innerHTML = `${forecastDate} ${getEmoji(forecastEmoji)}`;
+
             fiveDayTemp.innerHTML = `Temp: ${Math.round(forecastTemp * 1.8) + 32}\u00B0F`;
             fiveDayWind.innerHTML = `Wind: ${forecastWind} mph`;
             fiveDayHum.innerHTML = `Humidity: ${forecastHum}%`;
@@ -115,22 +119,21 @@ document
     }
   });
 
-  const conditionId = weather.id;
 
-  function getEmoji (conditionId){
-    if (conditionId >= 200 && conditionId < 300){
+  function getEmoji(id) {
+    if (id >= 200 && id < 300){
       return "⛈️";
-    } else if (conditionId >= 300 && conditionId < 400){
+    } else if (id >= 300 && id < 400){
       return "🌧️";
-    } else if (conditionId >= 500 && conditionId < 600){
+    } else if (id >= 500 && id < 600){
       return "🌧️";
-    } else if (conditionId >= 600 && conditionId < 700){
+    } else if (id >= 600 && id < 700){
       return "❄️";
-    } else if (conditionId >= 700 && conditionId < 800){
+    } else if (id >= 700 && id < 800){
       return "🌫️";
-    } else if (conditionId === 800){
+    } else if (id === 800){
       return "☀️";
-    } else if (conditionId >= 801 && conditionId < 810){
+    } else if (id >= 801 && id < 810){
       return "☁️";
     } else {
       return "?";
