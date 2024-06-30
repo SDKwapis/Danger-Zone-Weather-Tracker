@@ -22,7 +22,7 @@ function fetchAndDisplayWeather(cityValue) {
   const fiveDayExist = document.getElementById("FiveDayForecast");
   fiveDayExist.innerHTML = "";
   const apiKey = "f63ca6bf62c5c8783f6c0a4d9033f7ec";
-  const geoCode = `http://api.openweathermap.org/geo/1.0/direct?q=${cityValue}&limit=1&appid=${apiKey}`;
+  const geoCode = `https://api.openweathermap.org/geo/1.0/direct?q=${cityValue}&limit=1&appid=${apiKey}`;
 
   fetch(geoCode)
     .then((res) => res.json())
